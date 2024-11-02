@@ -1,7 +1,7 @@
 // routes/services.js
 const express = require('express');
 const router = express.Router();
-const Service = require('../models/Service');
+const Service = require('../models/serviceModel');
 
 // Crear un nuevo servicio
 router.post('/', async (req, res) => {
