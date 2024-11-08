@@ -2,9 +2,10 @@
 const express = require('express');
 const router = express.Router();
 const Service = require('../models/serviceModel');
+const auth = require('../middlewares/authMiddleware');
 
 // Crear un nuevo servicio
-router.post('/', async (req, res) => {
+router.post('/service/', auth, async (req, res) => {
     try {
         const service = new Service(req.body);
         await service.save();
@@ -15,7 +16,7 @@ router.post('/', async (req, res) => {
 });
 
 // Obtener todos los servicios
-router.get('/', async (req, res) => {
+router.get('/service/', async (req, res) => {
     try {
         const services = await Service.find();
         res.status(200).json(services);
@@ -25,7 +26,7 @@ router.get('/', async (req, res) => {
 });
 
 // Obtener un servicio por ID
-router.get('/:id', async (req, res) => {
+router.get('/service/:id', async (req, res) => {
     try {
         const service = await Service.findById(req.params.id);
         if (!service) return res.status(404).json({ message: 'Servicio no encontrado' });
@@ -36,7 +37,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Actualizar un servicio
-router.put('/:id', async (req, res) => {
+router.put('/service/:id', auth, async (req, res) => {
     try {
         const service = await Service.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!service) return res.status(404).json({ message: 'Servicio no encontrado' });
@@ -47,7 +48,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Eliminar un servicio
-router.delete('/:id', async (req, res) => {
+router.delete('/service/:id', async (req, res) => {
     try {
         const service = await Service.findByIdAndDelete(req.params.id);
         if (!service) return res.status(404).json({ message: 'Servicio no encontrado' });
