@@ -2,9 +2,10 @@
 const express = require('express');
 const router = express.Router();
 const Quote = require('../models/quoteModel');
+const auth = require('../middlewares/authMiddleware');
 
 // Crear una nueva cotización
-router.post('/', async (req, res) => {
+router.post('/quote',auth ,async (req, res) => {
     try {
         const quote = new Quote(req.body);
         await quote.save();
@@ -15,7 +16,7 @@ router.post('/', async (req, res) => {
 });
 
 // Obtener todas las cotizaciones
-router.get('/', async (req, res) => {
+router.get('/quote', async (req, res) => {
     try {
         const quotes = await Quote.find().populate('userId serviceId');
         res.status(200).json(quotes);
@@ -25,7 +26,7 @@ router.get('/', async (req, res) => {
 });
 
 // Obtener una cotización por ID
-router.get('/:id', async (req, res) => {
+router.get('/quote/:id', async (req, res) => {
     try {
         const quote = await Quote.findById(req.params.id).populate('userId serviceId');
         if (!quote) return res.status(404).json({ message: 'Cotización no encontrada' });
@@ -36,7 +37,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Actualizar una cotización
-router.put('/:id', async (req, res) => {
+router.put('/quote/:id', async (req, res) => {
     try {
         const quote = await Quote.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!quote) return res.status(404).json({ message: 'Cotización no encontrada' });
@@ -47,7 +48,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Eliminar una cotización
-router.delete('/:id', async (req, res) => {
+router.delete('/quote/:id', async (req, res) => {
     try {
         const quote = await Quote.findByIdAndDelete(req.params.id);
         if (!quote) return res.status(404).json({ message: 'Cotización no encontrada' });
