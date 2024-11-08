@@ -2,9 +2,10 @@
 const express = require('express');
 const router = express.Router();
 const Review = require('../models/ReviewModel');
- 
+const auth = require('../middlewares/authMiddleware');
+
 // Crear una nueva reseña
-router.post('/', async (req, res) => {
+router.post('/review', auth, async (req, res) => {
     try {
         const review = new Review(req.body);
         await review.save();
@@ -15,7 +16,7 @@ router.post('/', async (req, res) => {
 });
 
 // Obtener todas las reseñas
-router.get('/', async (req, res) => {
+router.get('/review', async (req, res) => {
     try {
         const reviews = await Review.find().populate('userId serviceId');
         res.status(200).json(reviews);
@@ -25,7 +26,7 @@ router.get('/', async (req, res) => {
 });
 
 // Obtener una reseña por ID
-router.get('/:id', async (req, res) => {
+router.get('/review/:id', async (req, res) => {
     try {
         const review = await Review.findById(req.params.id).populate('userId serviceId');
         if (!review) return res.status(404).json({ message: 'Reseña no encontrada' });
@@ -36,7 +37,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Actualizar una reseña
-router.put('/:id', async (req, res) => {
+router.put('/review/:id', auth, async (req, res) => {
     try {
         const review = await Review.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!review) return res.status(404).json({ message: 'Reseña no encontrada' });
@@ -47,7 +48,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Eliminar una reseña
-router.delete('/:id', async (req, res) => {
+router.delete('/review/:id', async (req, res) => {
     try {
         const review = await Review.findByIdAndDelete(req.params.id);
         if (!review) return res.status(404).json({ message: 'Reseña no encontrada' });
