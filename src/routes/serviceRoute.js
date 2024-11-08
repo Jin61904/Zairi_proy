@@ -5,7 +5,7 @@ const Service = require('../models/serviceModel');
 const auth = require('../middlewares/authMiddleware');
 
 // Crear un nuevo servicio
-router.post('/service/', auth, async (req, res) => {
+router.post('/service', auth, async (req, res) => {
     try {
         const service = new Service(req.body);
         await service.save();
@@ -16,7 +16,7 @@ router.post('/service/', auth, async (req, res) => {
 });
 
 // Obtener todos los servicios
-router.get('/service/', async (req, res) => {
+router.get('/service', async (req, res) => {
     try {
         const services = await Service.find();
         res.status(200).json(services);

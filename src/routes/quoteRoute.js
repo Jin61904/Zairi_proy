@@ -47,6 +47,7 @@ router.put('/quote/:id',auth , async (req, res) => {
     }
 });
 
+
 // Eliminar una cotización
 router.delete('/quote/:id', async (req, res) => {
     try {
