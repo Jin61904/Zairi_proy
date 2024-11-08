@@ -20,9 +20,9 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Rutas
 app.use('/api/auth', authRoutes);        
-app.use('/api/quotes', quoteRoutes);
-app.use('/api/reviews', reviewRoutes);
-app.use('/api/services', serviceRoutes);
+app.use('/api', quoteRoutes);
+app.use('/api', reviewRoutes);
+app.use('/api', serviceRoutes);
 
 // Configuración del puerto
 const PORT = process.env.PORT || 5000;

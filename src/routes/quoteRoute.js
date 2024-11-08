@@ -37,7 +37,7 @@ router.get('/quote/:id', async (req, res) => {
 });
 
 // Actualizar una cotización
-router.put('/quote/:id', async (req, res) => {
+router.put('/quote/:id',auth , async (req, res) => {
     try {
         const quote = await Quote.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!quote) return res.status(404).json({ message: 'Cotización no encontrada' });
