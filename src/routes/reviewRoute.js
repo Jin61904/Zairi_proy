@@ -18,9 +18,7 @@ router.post('/review', auth, async (req, res) => {
 // Obtener todas las reseñas
 router.get('/review', async (req, res) => {
     try {
-        const reviews = await Review.find()
-            .populate('userId', 'name email') // Limitar campos de userId
-            .populate('serviceId', 'type description price'); // Limitar campos de serviceId
+        const reviews = await Review.find().populate('userId serviceId');
         res.status(200).json(reviews);
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener las reseñas', error });
@@ -30,9 +28,7 @@ router.get('/review', async (req, res) => {
 // Obtener una reseña por ID
 router.get('/review/:id', async (req, res) => {
     try {
-        const review = await Review.findById(req.params.id)
-            .populate('userId', 'name email') // Limitar campos de userId
-            .populate('serviceId', 'type description price'); // Limitar campos de serviceId
+        const review = await Review.findById(req.params.id).populate('userId serviceId');
         if (!review) return res.status(404).json({ message: 'Reseña no encontrada' });
         res.status(200).json(review);
     } catch (error) {
