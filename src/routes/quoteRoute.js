@@ -5,7 +5,7 @@ const Quote = require('../models/quoteModel');
 const auth = require('../middlewares/authMiddleware');
 
 // Crear una nueva cotización
-router.post('/quote',auth ,async (req, res) => {
+router.post('/quote', auth, async (req, res) => {
     try {
         const quote = new Quote(req.body);
         await quote.save();
@@ -18,7 +18,9 @@ router.post('/quote',auth ,async (req, res) => {
 // Obtener todas las cotizaciones
 router.get('/quote', async (req, res) => {
     try {
-        const quotes = await Quote.find().populate('userId serviceId');
+        const quotes = await Quote.find()
+            .populate('userId', 'name email') // Limitar campos del usuario
+            .populate('serviceId', 'type description price'); // Limitar campos del servicio
         res.status(200).json(quotes);
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener las cotizaciones', error });
@@ -28,7 +30,9 @@ router.get('/quote', async (req, res) => {
 // Obtener una cotización por ID
 router.get('/quote/:id', async (req, res) => {
     try {
-        const quote = await Quote.findById(req.params.id).populate('userId serviceId');
+        const quote = await Quote.findById(req.params.id)
+            .populate('userId', 'name email') // Limitar campos del usuario
+            .populate('serviceId', 'type description price'); // Limitar campos del servicio
         if (!quote) return res.status(404).json({ message: 'Cotización no encontrada' });
         res.status(200).json(quote);
     } catch (error) {
@@ -37,7 +41,7 @@ router.get('/quote/:id', async (req, res) => {
 });
 
 // Actualizar una cotización
-router.put('/quote/:id',auth , async (req, res) => {
+router.put('/quote/:id', auth, async (req, res) => {
     try {
         const quote = await Quote.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!quote) return res.status(404).json({ message: 'Cotización no encontrada' });
@@ -46,7 +50,6 @@ router.put('/quote/:id',auth , async (req, res) => {
         res.status(400).json({ message: 'Error al actualizar la cotización', error });
     }
 });
-
 
 // Eliminar una cotización
 router.delete('/quote/:id', async (req, res) => {
