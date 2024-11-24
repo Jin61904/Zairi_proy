@@ -6,11 +6,20 @@ const quoteRoutes = require('./routes/quoteRoute');
 const reviewRoutes = require('./routes/reviewRoute');
 const serviceRoutes = require('./routes/serviceRoute');
 const authRoutes = require('./routes/authRoute'); // Importar rutas de autenticación
+const cors = require('cors');
 
 const app = express();
 
+app.use (cors());
 app.use(express.json());
 
+app.use(
+    cors({
+        origin: 'http://localhost:5173',
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+    })
+);
 // Conexión a la base de datos
 // index.js
 mongoose.connect(process.env.MONGO_URI)
