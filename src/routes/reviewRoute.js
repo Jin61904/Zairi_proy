@@ -1,7 +1,7 @@
 // routes/reviews.js
 const express = require('express');
 const router = express.Router();
-const Review = require('../models/ReviewModel');
+const Review = require('../models/reviewModel');
 const auth = require('../middlewares/authMiddleware');
 
 // Crear una nueva reseña
